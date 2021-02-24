@@ -20,9 +20,4 @@ A simple key management system to store user encrypted key.
         cd client
         npm install
         npm run start
-        
-### API
-
-This branch implements google-oauth using nodejs.
-
-Api for google authentication: `localhost:5000/auth/google`
+       
