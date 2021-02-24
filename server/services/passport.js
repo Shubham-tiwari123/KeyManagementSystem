@@ -5,12 +5,10 @@ const keys = require('../config/keys')
 const User = mongoose.model('oauthUser')
 
 passport.serializeUser((user, done) =>{
-    console.log("Called s")
     done(null, user.id)
 })
 
 passport.deserializeUser((id, done)=>{
-    console.log("Called u!!")
     User.findById(id).then(user =>{
         done(null, user)
     })
@@ -44,3 +42,5 @@ passport.use(
         })
     })
 );
+
+//use
