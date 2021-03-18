@@ -2,8 +2,10 @@ const mongoose = require('mongoose');
 const {Schema} = mongoose;
 
 const userSchema = new Schema({
-    googleId : String,
-    email: String
+    email: String,
+    name: String,
+    picture: String,
+    emailVerified: Boolean
 });
 
 mongoose.model('oauthUser', userSchema);

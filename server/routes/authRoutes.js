@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const keys = require('../config/keys')
 const { OAuth2Client } = require('google-auth-library')
 const client = new OAuth2Client(keys.googleClientID)
+const {getUser,saveUser} = require('../db/mongo')
 
 module.exports = (app) =>{
 
@@ -33,17 +34,15 @@ module.exports = (app) =>{
 
     app.post("/api/v1/auth/google", async (req, res) => {
         const { token }  = req.body
-        console.log("Token:",token)
         const ticket = await client.verifyIdToken({
             idToken: token,
             audience: keys.googleClientID
         });
-        const { name, email, picture } = ticket.getPayload();
-        /*const user = await db.user.upsert({
-            where: { email: email },
-            update: { name, picture },
-            create: { name, email, picture }
-        })  */
+
+        const { name, email, picture, email_verified } = ticket.getPayload();
+        console.log("Name:",name," Email:",email," Picture:",picture)
+
+        await saveUser(email, name, picture, email_verified)
         const jwtToken = jwt.sign({ email: email }, keys.serverSecret, {
             expiresIn: 86400 // expires in 24 hours
         });
